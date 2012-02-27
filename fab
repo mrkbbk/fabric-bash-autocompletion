@@ -5,8 +5,8 @@ _fab()
     # Variable to hold the current word
     cur="${COMP_WORDS[COMP_CWORD]}"
 
-    # Build a list of the available tasks using the command 'fab -l'
-    local tags=$(fab -l 2>/dev/null | grep "^    " | awk '{print $1;}')
+    # Build a list of the available tasks by parsing ./fabfile.py with awk
+    local tags=$( awk '/^def/ {def_name = substr($2, 0, match($2,"\(")); printf("%s ", def_name)}' ./fabfile.py )
 
     # Generate possible matches and store them in the
     # array variable COMPREPLY
